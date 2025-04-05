@@ -7,6 +7,8 @@ esphome:
       - lvgl.widget.hide: boot_screen
 
 api:
+  encryption:
+    key: !secret keyguiton480
 
 logger:
 #  level: info

@@ -12,6 +12,9 @@ substitutions:
   ceiling_fan_light: "\U000F1798"
   bed:               "\U000F02E3"
   sunny:             "\U000F05A8"
+  30sec:             "\U000F0D06"
+  45sec:             "\U000F1B12"
+  60sec:             "\U000F160B"
 
   icon_font: light40
   text_font: roboto24
@@ -129,25 +132,43 @@ lvgl:
               icon: $lightbulb
         # Button 2 - Standard light button with state updates
         - button: !include
-            file: modules/buttons/switch_button.yaml
+            file: modules/buttons/light_button.yaml
             vars:
               uid: button_2
               height: $button_height_single
-              text: Button 2
+              text: Plafonnier
               icon: $lightbulb
-              entity_id: "switch.athom_smart_plug_v3_50ebc0_switch"
+              entity_id: "light.plafonnier_sous_sol_light"
         # Button 3 - Empty button moves the buttons below it down one
         - button: !include
             file: modules/buttons/transparent_empty_button.yaml
             vars:
               uid: empty_3
               height: $button_height_single
-        # Button 4 - Dimming (double hight) light button with state updates
+        # Button 4 - Start 30 seconds notification script
         - button: !include
-            file: modules/buttons/dimmer_light_button.yaml
+            file: modules/buttons/switch_button.yaml
             vars:
               uid: button_4
-              height: $button_height_double
-              text: RGB light
-              icon: $string_lights
-              entity_id: light.athom_rgb_light_d93662_rgb_light_strip
+              height: $button_height_single
+              text: Timer 30 secondes
+              icon: $30sec
+              entity_id: "script.30_secondes"
+        # Button 5 - Start 45 seconds notification script
+        - button: !include
+            file: modules/buttons/switch_button.yaml
+            vars:
+              uid: button_5
+              height: $button_height_single
+              text: Timer 45 secondes
+              icon: $45sec
+              entity_id: "script.45_secondes"
+        # Button 6 - Start 60 seconds notification script
+        - button: !include
+            file: modules/buttons/switch_button.yaml
+            vars:
+              uid: button_6
+              height: $button_height_single
+              text: Timer 60 secondes
+              icon: $60sec
+              entity_id: "script.60_secondes"
