@@ -16,7 +16,7 @@ sun:
 
 time:
   - platform: homeassistant
-    id: system_time
+    id: homeassistant_time
     on_time_sync:
       - if: # Updates the last restart time
           condition:
@@ -24,7 +24,7 @@ time:
           then:
             - text_sensor.template.publish:
                 id: device_last_restart
-                state: !lambda 'return id(system_time).now().strftime("%a %d %b %Y - %I:%M:%S %p");'
+                state: !lambda 'return id(homeassistant_time).now().strftime("%a %d %b %Y - %I:%M:%S %p");'
     on_time:
       - seconds: 0
         minutes: $screen_night_minute

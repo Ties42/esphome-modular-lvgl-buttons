@@ -6,6 +6,12 @@ image:
     resize: 450x90 # aspect ratio 5
     type: RGB565
     transparency: alpha_channel
+  
+  - file: https://esphome.io/_static/logo-text-on-light.svg
+    id: boot_logo
+    type: RGB565
+    resize: 470x95
+    transparency: alpha_channel
 
   - file: https://esphome.io/_static/logo-text-on-light.svg
     id: boot_logo_20px
