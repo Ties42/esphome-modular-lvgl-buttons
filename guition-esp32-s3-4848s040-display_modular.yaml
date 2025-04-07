@@ -124,6 +124,8 @@ lvgl:
       bg_color: white
       bg_opa: cover
       pad_all: 5
+      <<: !include
+        file: modules/sections/swipe_navigation.yaml
       widgets:
         # Button 1 - Standard (double hight) internal relay button with state updates
         - button: !include
@@ -173,6 +175,8 @@ lvgl:
     - id: second_page
       width: 100%
       bg_color: Black
+      <<: !include
+        file: modules/sections/swipe_navigation.yaml      
       widgets:
           # Outer Clock Container
           - obj:
