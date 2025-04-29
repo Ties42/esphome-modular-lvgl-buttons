@@ -1,5 +1,5 @@
 ---
-# Switch toggle button
+# Input_number Decrease call button
 # vars:
   # uid:
   # height:
@@ -8,18 +8,19 @@
   # entity_id:
 height: ${height}
 id: button_${uid}
+width: ${width}
 widgets:
   - label:
-      text_font: $icon_font
-      align: top_left
+      text_font: $text_font_big
+      align: center
       id: icon_${uid}
       text: ${icon}
-  - label:
-      align: bottom_left
-      id: label_${uid}
-      text: ${text}
+  # - label:
+  #     align: bottom_left
+  #     id: label_${uid}
+  #     text: ${text}
 on_short_click:
     - homeassistant.action:
-        action: switch.toggle
+        action: input_number.decrement
         data:
           entity_id: ${entity_id}

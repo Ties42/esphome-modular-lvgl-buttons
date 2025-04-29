@@ -1,0 +1,24 @@
+---
+# Script call button with icon only
+# vars:
+  # uid:
+  # height:
+  # text:
+  # icon:
+  # entity_id:
+height: ${height}
+id: button_${uid}
+width: ${width}
+widgets:
+  - label:
+      text_font: $text_font_big
+      align: center
+      id: icon_${uid}
+      text: ${icon}
+  # - label:
+  #     align: bottom_left
+  #     id: label_${uid}
+  #     text: ${text}
+on_short_click:
+    - homeassistant.action:
+        action: ${entity_id}

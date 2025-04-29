@@ -35,13 +35,107 @@ sensor:
                 format: "Wi-Fi Strength: %.0f%%"
                 args: [ 'id(wifi_signal_db_percent).state' ]
 
+  # - platform: template
+  #   id: ha_now_timestamp
+  #   on_value: 
+  #     then:
+  #       - lvgl.label.update:
+  #           id: label_button_1_9
+  #           text: 
+  #             format: "%.0f"
+  #             args: ['id(ha_now_timestamp).state']
+
+number:
+  - platform: homeassistant
+    id: timer_minutes
+    entity_id: input_number.timer_minutes
+    on_value: 
+        then:
+          - lvgl.label.update:
+              id: label_button_2_1
+              text:
+                format: "%.0f minute"
+                args: ['id(timer_minutes).state']
+
+  - platform: template
+    id: ha_now_timestamp2
+    optimistic: true
+    min_value: -10000000000
+    max_value: 10000000000
+    step: 1
+
+  - platform: homeassistant
+    id: timer_finish_timestamp
+    entity_id: input_number.timer_custom_finish_number
+    # on_value: 
+    #     then:
+    #       - lvgl.label.update:
+    #           id: label_button_1_7
+    #           text:
+    #             format: "%.0f"
+    #             args: ['id(timer_finish_timestamp).state']
+
+  - platform: homeassistant
+    id: timer_seconds
+    entity_id: input_number.timer_seconds
+    on_value: 
+        then:
+          - lvgl.label.update:
+              id: label_button_2_8
+              text:
+                format: "%.0f second"
+                args: ['id(timer_seconds).state']
+
 binary_sensor:
   - platform: status
     name: "Status"
     icon: mdi:check-network-outline
     entity_category: diagnostic
 
+datetime:
+  - platform: template
+    id: timer_remaining_datetime
+    type: datetime
+    optimistic: yes
+    initial_value: "2025-01-01 00:00:00"
+    on_value:
+      then:
+        - lvgl.label.update:
+            id: label_button_1_7
+            text: 
+                time_format: "%Y-%m-%d %H:%M:%S"
+                time: !lambda return x;
+
 text_sensor:
+  - platform: homeassistant
+    id: timer_status
+    entity_id: timer.timer_custom
+    on_value: 
+      then:
+        - lvgl.label.update:
+            id: label_button_1_6
+            text: !lambda return id(timer_status).state;
+
+  - platform: homeassistant
+    id: timer_finish
+    entity_id: input_text.timer_custom_finishtime
+    on_value: 
+      then:
+        - lvgl.label.update:
+            id: label_button_1_8
+            text: !lambda return id(timer_finish).state;
+        - lambda: |-
+            auto time_finish = id(timer_finish).state.c_str();
+            ESP_LOGD("timer_finish", "timer_finish set: %s", time_finish);
+            auto call = id(timer_remaining_datetime).make_call();
+            call.set_datetime(time_finish);
+            call.perform();
+        # - lvgl.label.update:
+        #     id: label_button_1_7
+        #     text:
+        #         time_format: "%Y-%m-%d %H:%M:%S"
+        #         time: !lambda return id(timer_remaining_datetime).state_as_esptime();
+            
   - platform: version
     id: esphome_version
     name: 'ESPHome Version'
@@ -95,3 +189,38 @@ text_sensor:
               text:
                 format: "Connected SSID: %s"
                 args: [ 'id(connected_ssid).state.c_str()' ]
+
+  # - platform: template
+  #   id: timer_finish_in
+  #   update_interval: 1s
+  #   lambda: !lambda |-
+  #     if (id(timer_status).state == "active") {
+  #       double remain;
+  #       int remain_h, remain_m, remain_s, currenttime, finishtime;
+  #       currenttime = id(homeassistant_time).now().timestamp;
+  #       finishtime = id(timer_finish_timestamp).state;
+  #       remain= finishtime - currenttime;
+  #       remain_h = (int) remain/3600;
+  #       remain_m = (int) (remain - 3600*remain_h)/60;
+  #       remain_s = (int) remain - 3600*remain_h - 60*remain_m;
+  #       return remain;
+  #     }
+  #   on_value: 
+  #     then:
+  #       - lvgl.label.update:
+  #           id: label_button_1_7
+  #           text:
+  #             format: "%s"
+  #             args: ['id(timer_finish_in).state']
+text:
+  - platform: template
+    id: ha_now_timestamp
+    mode: text
+    optimistic: true
+    min_length: 0
+    max_length: 10
+    on_value: 
+      then:
+        - lvgl.label.update:
+            id: label_button_1_9
+            text: !lambda return id(ha_now_timestamp).state;

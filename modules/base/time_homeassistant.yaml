@@ -44,3 +44,46 @@ time:
         seconds: 0
         then:
           - script.execute: time_update
+      - seconds: '*'
+        minutes: '*'
+        then:
+          - lvgl.label.update:
+              id: label_button_2_3
+              text: 
+                time_format: "%H:%M:%S"
+                time: !lambda return id(homeassistant_time).now();
+          - lambda: |-
+              if (id(timer_status).state == "active") {
+                struct tm tm_finish{}, tm_ha_time{};
+                time_t t_helper;
+                double remain;
+                int remain_h, remain_m, remain_s, currenttime, finishtime;
+                
+                tm_finish = id(timer_remaining_datetime).state_as_esptime().to_c_tm();
+                tm_ha_time = id(homeassistant_time).now().to_c_tm();
+                // For example, create a custom log message when a value is received:
+                ESP_LOGD("tm_finish", "Value of tm_finish: %04d-%02d-%02d %02d:%02d:%02d", id(timer_remaining_datetime).state_as_esptime().year, id(timer_remaining_datetime).state_as_esptime().month, id(timer_remaining_datetime).state_as_esptime().day_of_month,id(timer_remaining_datetime).state_as_esptime().hour,id(timer_remaining_datetime).state_as_esptime().minute,id(timer_remaining_datetime).state_as_esptime().second);
+                ESP_LOGD("tm_ha_time", "Value of tm_ha_time: %04d-%02d-%02d %02d:%02d:%02d", id(homeassistant_time).now().year, id(homeassistant_time).now().month, id(homeassistant_time).now().day_of_month,id(homeassistant_time).now().hour,id(homeassistant_time).now().minute,id(homeassistant_time).now().second);
+                remain= difftime(mktime(&tm_finish), mktime(&tm_ha_time));
+                ESP_LOGD("remain", "remain: %i", remain);
+                remain_h = (int) remain/3600;
+                remain_m = (int) (remain - 3600*remain_h)/60;
+                remain_s = (int) remain - 3600*remain_h - 60*remain_m;
+                ESP_LOGD("time debug", "Remaining: %.0i:%.0i:%.0i", remain_h,remain_m,remain_s);
+                auto time_finish = remain;
+                auto call = id(ha_now_timestamp2).make_call();
+                call.set_value(time_finish);
+                call.perform();
+                size_t n_zero = 2;
+                auto rem_h_string = to_string(remain_h);
+                auto rem_m_string = to_string(remain_m);
+                auto rem_s_string = to_string(remain_s);
+                auto rem_hour = std::string(2 - std::min(n_zero, rem_h_string.length()), '0') + rem_h_string;
+                auto rem_minute = std::string(2 - std::min(n_zero, rem_m_string.length()), '0') + rem_m_string;
+                auto rem_second = std::string(2 - std::min(n_zero, rem_s_string.length()), '0') + rem_s_string;
+                auto time_remain_text = rem_hour + ":" + rem_minute + ":" + rem_second;
+                auto call2 = id(ha_now_timestamp).make_call();
+                ESP_LOGD("time remain text", "Remaining text : %s", time_remain_text);
+                call2.set_value(time_remain_text);
+                call2.perform();
+              }

@@ -1,0 +1,17 @@
+---
+# Label only button
+# vars:
+  # uid:
+  # height:
+  # text:
+  # icon:
+  # entity_id:
+height: ${height}
+width: ${width}
+id: button_${uid}
+widgets:
+  - label:
+      text_font: roboto36
+      align: center
+      id: label_${uid}
+      text: ${text}

@@ -92,5 +92,19 @@ font:
       "\U000F160B",  # sec60
       "\U000F06C2",  # arrowright
       "\U000F06C1",  # arrowleft
+      "\U000F15CB",  # number1
+      "\U000F0B3E",  # number5
+    ]
+  
+    # http://materialdesignicons.com/cdn/7.4.47/
+  - file: 'https://github.com/Templarian/MaterialDesign-Webfont/raw/v7.4.47/fonts/materialdesignicons-webfont.ttf'
+    id: light75
+    size: 75
+    bpp: 8
+    glyphs: [
+      "\U000F15CB",  # number1
+      "\U000F0B3E",  # number5
+      "\U000F040E",  # playpause
+      "\U000F1052",  # numberminus1
     ]
 

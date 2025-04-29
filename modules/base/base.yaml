@@ -17,6 +17,29 @@ logger:
 #    touchscreen: info
 #    scheduler: none
 
+# Time update script - This is run once per second. Use it to update any time related labels.
+# script:
+#   - id: time_update
+#     then:
+#       - lvgl.indicator.update:
+#           id: second_hand
+#           value: !lambda |-
+#             return id(homeassistant_time).now().second;
+#       - lvgl.indicator.update:
+#           id: minute_hand
+#           value: !lambda |-
+#             return id(homeassistant_time).now().minute;
+#       - lvgl.indicator.update:
+#           id: hour_hand
+#           value: !lambda |-
+#             auto now = id(homeassistant_time).now();
+#             return std::fmod(now.hour, 12) * 60 + now.minute;
+script:
+  - id: time_update
+    then:
+      - lambda: |-
+          // No operation
+
 lvgl:
   displays:
     - my_display
