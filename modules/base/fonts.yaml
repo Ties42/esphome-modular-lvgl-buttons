@@ -67,6 +67,9 @@ font:
       "\U000F160B",  # sec60
       "\U000F06C2",  # arrowright
       "\U000F06C1",  # arrowleft
+      "\U000F02DC",  # home
+      "\U000F0731",  # previous
+      "\U000F0734",  # next
     ]
 
   # http://materialdesignicons.com/cdn/7.4.47/

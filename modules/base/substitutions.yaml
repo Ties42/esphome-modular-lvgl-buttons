@@ -21,6 +21,9 @@ substitutions:
   number5:           "\U000F0B3E"
   playpause:         "\U000F040E"
   numberminus1:      "\U000F1052"
+  home:              "\U000F02DC"
+  previous:          "\U000F0731"
+  next:              "\U000F0734"
 
   red: "0xFF0000"
   icon_font: light40
@@ -35,14 +38,15 @@ substitutions:
   label_on_color: "white"
   label_off_color: "gray"
   button_text_color: "white"
-  button_height_single: '109px'
-  button_height_double: '228px'
+  button_height_single: '102px'
+  button_height_double: '216px'
   button_width: '150px'
   button_width_4column: '110px'
   button_width_2column: '230px'
   touchscreen_idle_timeout: "30s"
   touchscreen_daytime_brightness: "100%"
-  touchscreen_nighttime_brightness: "50%"
+  touchscreen_daytime_brightness_idle: "45%"
+  touchscreen_nighttime_brightness: "30%"
   # Boot screen configuration
   boot_screen_delay: 30s
 

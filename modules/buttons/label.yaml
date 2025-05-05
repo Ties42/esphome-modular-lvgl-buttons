@@ -1,5 +1,5 @@
 ---
-# Label only button
+# Label only
 # vars:
   # uid:
   # height:
@@ -8,10 +8,13 @@
   # entity_id:
 height: ${height}
 width: ${width}
+bg_opa: TRANSP
+checkable: no
 id: button_${uid}
 widgets:
   - label:
+      id: label_${uid}
       text_font: roboto36
       align: center
-      id: label_${uid}
       text: ${text}
+      text_color: 0x000000

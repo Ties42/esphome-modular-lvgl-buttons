@@ -52,9 +52,9 @@ number:
     on_value: 
         then:
           - lvgl.label.update:
-              id: label_button_2_1
+              id: label_label_2_1
               text:
-                format: "%.0f minute"
+                format: "%.0f minutes"
                 args: ['id(timer_minutes).state']
 
   - platform: template
@@ -81,9 +81,9 @@ number:
     on_value: 
         then:
           - lvgl.label.update:
-              id: label_button_2_8
+              id: label_label_2_8
               text:
-                format: "%.0f second"
+                format: "%.0f secondes"
                 args: ['id(timer_seconds).state']
 
 binary_sensor:
@@ -112,6 +112,13 @@ text_sensor:
     entity_id: timer.timer_custom
     on_value: 
       then:
+        - if:
+            condition:
+              lambda: 'return id(timer_status).state == "idle";'
+            then:
+              - lvgl.label.update:
+                  id: label_button_2_3
+                  text: "00:00:00"
         - lvgl.label.update:
             id: label_button_1_6
             text: !lambda return id(timer_status).state;
@@ -214,7 +221,7 @@ text_sensor:
   #             args: ['id(timer_finish_in).state']
 text:
   - platform: template
-    id: ha_now_timestamp
+    id: timer_remain_text
     mode: text
     optimistic: true
     min_length: 0
@@ -222,5 +229,6 @@ text:
     on_value: 
       then:
         - lvgl.label.update:
-            id: label_button_1_9
-            text: !lambda return id(ha_now_timestamp).state;
+            id: label_button_2_3
+            text: !lambda return id(timer_remain_text).state;
+

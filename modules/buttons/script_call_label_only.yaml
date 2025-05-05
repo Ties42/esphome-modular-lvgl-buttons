@@ -1,0 +1,28 @@
+---
+# Script call button with label only
+# vars:
+  # uid:
+  # height:
+  # width:
+  # text:
+  # entity_id:
+height: ${height}
+id: button_${uid}
+width: ${width}
+widgets:
+#   - label:
+#       text_font: $text_font_big
+#       align: center
+#       id: icon_${uid}
+#       text: ${icon}
+  - label:
+      id: label_${uid}
+      text: ${text}
+      text_font: roboto36
+      align: center
+on_short_click:
+    - homeassistant.action:
+        action: ${entity_id}
+    - lvgl.label.update:
+        id: label_${uid}
+        text: "00:00:00"

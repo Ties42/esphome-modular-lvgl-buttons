@@ -35,6 +35,20 @@ lvgl:
     - id: no_checked_color
       bg_color: 0xCC5E14
       text_color: 0xB6B6B6
+    - id: header_footer
+      bg_color: 0x2F8CD8
+      bg_grad_color: 0x005782
+      bg_grad_dir: VER
+      bg_opa: COVER
+      border_opa: TRANSP
+      radius: 0
+      pad_all: 0
+      pad_row: 0
+      pad_column: 0
+      border_color: 0x0077b3
+      text_color: 0xFFFFFF
+      width: 100%
+      height: 30
   theme: !include { file: modules/base/theme.yaml }
   page_wrap: true
 
@@ -47,7 +61,7 @@ lvgl:
 
 # Main Page
   pages:
-    - id: main_page
+    - id: page_test
       layout:
         type: flex
         flex_flow: COLUMN_WRAP
@@ -55,8 +69,6 @@ lvgl:
       bg_color: white
       bg_opa: cover
       pad_all: 5
-      <<: !include
-        file: modules/sections/swipe_navigation.yaml
       widgets:
         # Button 1 - Standard (double hight) internal relay button with state updates
         - button: !include
@@ -102,7 +114,7 @@ lvgl:
               height: $button_height_single
               text: Go to clock
               icon: $arrowright
-              page: "second_page"
+              page: "page_timer_custom"
         - button:
             height: $button_height_single
             width: $button_width
@@ -155,7 +167,7 @@ lvgl:
                   id: label_button_1_10
                   text: 0
 
-    - id: second_page
+    - id: page_timer_custom
       layout:
         type: flex
         flex_flow: ROW_WRAP
@@ -163,17 +175,17 @@ lvgl:
       bg_color: white
       bg_opa: cover
       pad_all: 5
-      <<: !include
-        file: modules/sections/swipe_navigation.yaml
       widgets:
         # Button 3 - Standard (double hight) internal relay button with state updates
         - button: !include
-            file: modules/buttons/label.yaml
+            file: modules/buttons/script_call_label_only.yaml
             vars:
               uid: button_2_3
               height: $button_height_single
               width: $button_width_2column
-              text: "0"
+              text: "00:00:00"
+              entity_id: "script.timer_custom_cancel"
+              action: ${entity_id}
         # Button 4 - Standard (double hight) internal relay button with state updates
         - button: !include
             file: modules/buttons/script_call_icon_only.yaml
@@ -220,21 +232,21 @@ lvgl:
               icon: $number5
               entity_id: "script.timer_5_secondes"
         # Button 1 - Standard (double hight) internal relay button with state updates
-        - button: !include
+        - label: !include
             file: modules/buttons/label.yaml
             vars:
-              uid: button_2_1
+              uid: label_2_1
               height: $button_height_single
               width: $button_width_2column
-              text: "0"
+              text: "0 minutes"
         # Button 8 - Standard (double hight) internal relay button with state updates
-        - button: !include
+        - label: !include
             file: modules/buttons/label.yaml
             vars:
-              uid: button_2_8
+              uid: label_2_8
               height: $button_height_single
               width: $button_width_2column
-              text: "0"
+              text: "0 secondes"
         # Button 9 - Standard (double hight) internal relay button with state updates
         - button: !include
             file: modules/buttons/input_number_decrease.yaml

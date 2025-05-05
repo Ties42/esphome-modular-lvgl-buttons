@@ -26,6 +26,16 @@ time:
                 id: device_last_restart
                 state: !lambda 'return id(homeassistant_time).now().strftime("%a %d %b %Y - %I:%M:%S %p");'
     on_time:
+      - hours: 2,3,4,5
+        minutes: 5
+        seconds: 0
+        then:
+          - switch.turn_on: switch_antiburn
+      - hours: 2,3,4,5
+        minutes: 35
+        seconds: 0
+        then:
+          - switch.turn_off: switch_antiburn
       - seconds: 0
         minutes: $screen_night_minute
         hours: $screen_night_hour
@@ -48,7 +58,7 @@ time:
         minutes: '*'
         then:
           - lvgl.label.update:
-              id: label_button_2_3
+              id: label_button_1_9
               text: 
                 time_format: "%H:%M:%S"
                 time: !lambda return id(homeassistant_time).now();
@@ -82,8 +92,32 @@ time:
                 auto rem_minute = std::string(2 - std::min(n_zero, rem_m_string.length()), '0') + rem_m_string;
                 auto rem_second = std::string(2 - std::min(n_zero, rem_s_string.length()), '0') + rem_s_string;
                 auto time_remain_text = rem_hour + ":" + rem_minute + ":" + rem_second;
-                auto call2 = id(ha_now_timestamp).make_call();
+                auto call2 = id(timer_remain_text).make_call();
                 ESP_LOGD("time remain text", "Remaining text : %s", time_remain_text);
                 call2.set_value(time_remain_text);
                 call2.perform();
               }
+
+switch:
+  - platform: template
+    name: Antiburn
+    id: switch_antiburn
+    icon: mdi:television-shimmer
+    optimistic: true
+    entity_category: "config"
+    turn_on_action:
+      - logger.log: "Starting Antiburn"
+      - if:
+          condition: lvgl.is_paused
+          then:
+            - lvgl.resume:
+            - lvgl.widget.redraw:
+      - lvgl.pause:
+          show_snow: true
+    turn_off_action:
+      - logger.log: "Stopping Antiburn"
+      - if:
+          condition: lvgl.is_paused
+          then:
+            - lvgl.resume:
+            - lvgl.widget.redraw:
