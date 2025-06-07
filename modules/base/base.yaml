@@ -40,6 +40,8 @@ script:
       - lambda: |-
           // No operation
 
+http_request:
+
 lvgl:
   displays:
     - my_display

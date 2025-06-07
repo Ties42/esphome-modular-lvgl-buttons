@@ -35,6 +35,30 @@ sensor:
                 format: "Wi-Fi Strength: %.0f%%"
                 args: [ 'id(wifi_signal_db_percent).state' ]
 
+  - platform: homeassistant
+    id: media_player_volume
+    entity_id: media_player.ma_cuisine
+    attribute: volume_level
+    on_value:
+      - lvgl.slider.update:
+          id: slider_media_player
+          value: !lambda return (x * 100);
+
+  - platform: homeassistant
+    id: media_thumbnail_ready
+    entity_id: input_datetime.media_thumbnail_write_done
+    on_value:
+      - component.update: my_image
+
+#  - platform: homeassistant
+#    id: volume_cuisine
+#    entity_id: media_player.ma_cuisine
+#    attribute: volume_level
+#    on_value:
+#      - lvgl.slider.update:
+#          id: slider_volume_cuisine
+#          value: !lambda return (x * 100);
+
   # - platform: template
   #   id: ha_now_timestamp
   #   on_value: 
@@ -122,6 +146,89 @@ text_sensor:
         - lvgl.label.update:
             id: label_button_1_6
             text: !lambda return id(timer_status).state;
+
+  - platform: homeassistant
+    id: media_source
+    entity_id: media_player.ma_cuisine
+    attribute: media_content_id
+
+  - id: media_thumbnail
+    platform: homeassistant
+    entity_id: media_player.ma_cuisine
+    attribute: entity_picture
+#    on_value:
+#      then:
+#        - delay: 
+#            seconds: 10
+#        - component.update: my_image
+      
+
+  - id: media_shuffle
+    platform: homeassistant
+    entity_id: media_player.ma_cuisine
+    attribute: shuffle
+    on_value:
+      - if:
+          condition:
+            lambda: 'return id(media_shuffle).state == "on";'
+          then:
+            - lvgl.label.update:
+                id: icon_button_3_1
+                text: $shuffle_icon
+          else:
+            - lvgl.label.update:
+                id: icon_button_3_1
+                text: $noshuffle_icon
+
+  - id: media_song_title
+    platform: homeassistant
+    entity_id: media_player.ma_cuisine
+    attribute: media_title
+    on_value:
+#      - lvgl.label.update:
+#          id: label_song
+#          text: !lambda return "Song: " + id(media_song_title).state;
+      - then:
+          lambda: |-
+            auto concatsong = "Song: " + id(media_song_title).state;
+            auto call2 = id(song_text).make_call();
+            call2.set_value(concatsong);
+            call2.perform();
+
+  - id: media_album_title
+    platform: homeassistant
+    entity_id: media_player.ma_cuisine
+    attribute: media_album_name
+    on_value:
+#      - lvgl.label.update:
+#          id: label_album
+#          text: !lambda return "Album: " + id(media_album_title).state;
+      - then:
+          lambda: |-
+            if (id(media_source).state.substr(0,4) == "ytmu") {
+              auto concatalbum = "Album: ";
+              auto call2 = id(album_text).make_call();
+              call2.set_value(concatalbum);
+              call2.perform();
+            } else {
+              auto concatalbum = "Album: " + id(media_album_title).state;
+              auto call2 = id(album_text).make_call();
+              call2.set_value(concatalbum);
+              call2.perform();
+            }
+
+  - id: media_artist_title
+    platform: homeassistant
+    entity_id: media_player.ma_cuisine
+    attribute: media_artist
+    on_value:
+      - then:
+          lambda: |-
+            auto concatartist = "Artist: " + id(media_artist_title).state;
+            auto call2 = id(artist_text).make_call();
+            call2.set_value(concatartist);
+            call2.perform();
+
 
   - platform: homeassistant
     id: timer_finish
@@ -232,3 +339,69 @@ text:
             id: label_button_2_3
             text: !lambda return id(timer_remain_text).state;
 
+  - platform: template
+    id: song_text
+    mode: text
+    optimistic: true
+    min_length: 0
+    max_length: 255
+    on_value: 
+      then:
+        - lvgl.label.update:
+            id: label_song
+            text: !lambda return id(song_text).state;
+
+  - platform: template
+    id: album_text
+    mode: text
+    optimistic: true
+    min_length: 0
+    max_length: 255
+    on_value: 
+      then:
+        - lvgl.label.update:
+            id: label_album
+            text: !lambda return id(album_text).state;
+
+  - platform: template
+    id: artist_text
+    mode: text
+    optimistic: true
+    min_length: 0
+    max_length: 255
+    on_value: 
+      then:
+        - lvgl.label.update:
+            id: label_artist
+            text: !lambda return id(artist_text).state;
+
+#  - platform: template
+#    id: album_cover_http
+#    mode: text
+#    optimistic: true
+#    min_length: 0
+#    max_length: 255
+#    on_value: 
+#      then:
+#        - online_image.release:
+#            id: my_image
+#        - online_image.set_url:
+#            id: my_image
+#            url: !lambda return id(album_cover_http).state;
+#        - component.update: my_image
+
+online_image:
+  - id: my_image
+    url: http://192.168.1.13:8123/local/media_thumbnail.png
+    format: png
+    type: RGB565
+    resize: 295x295
+    on_download_finished:
+      - lvgl.image.update:
+          id: ss_currently_playing
+          src: my_image
+    on_error: 
+      then:
+        - delay: 
+            seconds: 10
+        - component.update: my_image

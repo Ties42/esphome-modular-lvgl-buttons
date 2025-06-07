@@ -1,0 +1,38 @@
+---
+# Media Player shuffle call button
+# vars:
+  # uid:
+  # height:
+  # width:
+  # icon:
+  # entity_id:
+height: ${height}
+id: button_${uid}
+width: ${width}
+widgets:
+  - label:
+      text_font: $text_font_big
+      align: center
+      id: icon_${uid}
+      text: ${icon}
+  # - label:
+  #     align: bottom_left
+  #     id: label_${uid}
+  #     text: ${text}
+on_short_click:
+  then:
+    - if :
+        condition:
+          lambda: 'return id(media_shuffle).state == "on";'
+        then:
+          - homeassistant.action:
+              action: media_player.shuffle_set
+              data:
+                entity_id: ${entity_id}
+                shuffle: 'false'
+        else:
+          - homeassistant.action:
+              action: media_player.shuffle_set
+              data:
+                entity_id: ${entity_id}
+                shuffle: 'true'

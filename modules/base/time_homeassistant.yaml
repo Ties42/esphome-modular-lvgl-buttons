@@ -26,6 +26,12 @@ time:
                 id: device_last_restart
                 state: !lambda 'return id(homeassistant_time).now().strftime("%a %d %b %Y - %I:%M:%S %p");'
     on_time:
+#      - seconds: 0,10,20,30,40,50
+#        then:
+#          - component.update: my_image
+#          - lvgl.image.update:
+#              id: ss_currently_playing
+#              src: my_image
       - hours: 2,3,4,5
         minutes: 5
         seconds: 0
@@ -46,6 +52,13 @@ time:
       - seconds: 0
         minutes: $screen_day_minute
         hours: $screen_day_hour
+        then:
+          - select.set:
+              id: brightness_mode
+              option: "Day"
+      - seconds: 0
+        minutes: $screen_evening_minute
+        hours: $screen_evening_hour
         then:
           - select.set:
               id: brightness_mode
@@ -93,7 +106,6 @@ time:
                 auto rem_second = std::string(2 - std::min(n_zero, rem_s_string.length()), '0') + rem_s_string;
                 auto time_remain_text = rem_hour + ":" + rem_minute + ":" + rem_second;
                 auto call2 = id(timer_remain_text).make_call();
-                ESP_LOGD("time remain text", "Remaining text : %s", time_remain_text);
                 call2.set_value(time_remain_text);
                 call2.perform();
               }

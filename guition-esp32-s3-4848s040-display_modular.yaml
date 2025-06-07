@@ -48,7 +48,7 @@ lvgl:
       border_color: 0x0077b3
       text_color: 0xFFFFFF
       width: 100%
-      height: 30
+      height: 35
   theme: !include { file: modules/base/theme.yaml }
   page_wrap: true
 
@@ -283,3 +283,126 @@ lvgl:
               width: $button_width_4column
               icon: $number5
               entity_id: "script.timer_5_secondes_decrease"
+
+    - id: page_media_player
+      layout:
+        type: flex
+        flex_flow: ROW_WRAP
+      width: 100%
+      bg_color: white
+      bg_opa: cover
+      pad_all: 5
+      widgets:
+        - obj:
+            width: 295
+            height: 295
+            on_short_click:
+              - homeassistant.action:
+                  action: media_player.media_play_pause
+                  data:
+                    entity_id: media_player.ma_cuisine
+            widgets:
+              - image:
+                  align: CENTER
+                  src: my_image
+                  id: ss_currently_playing
+        - obj:
+            width: 120
+            height: 295
+            layout:
+              type: flex
+              flex_flow: ROW_WRAP
+            widgets:
+              - button: !include
+                  file: modules/buttons/media_previous.yaml
+                  vars:
+                    uid: button_3_2
+                    height: 144
+                    width: 115
+                    icon: $previous_track
+                    entity_id: "media_player.ma_cuisine"              
+              - button: !include
+                  file: modules/buttons/media_next.yaml
+                  vars:
+                    uid: button_3_3
+                    height: 144
+                    width: 115
+                    icon: $next_track
+                    entity_id: "media_player.ma_cuisine"
+        - obj:
+            width: 35
+            height: 290
+            layout:
+              type: flex
+              flex_flow: ROW_WRAP
+            widgets:
+              - label:
+                  id: label_volume
+                  width: 30
+                  height: 30
+                  align: TOP_LEFT
+                  text: $volume
+                  text_font: light30
+                  text_color: 0x000000
+              - slider:
+                  id: slider_media_player
+                  width: 30
+                  height: 255
+                  align: TOP_LEFT
+                  knob:
+                    pad_all: 0
+                  pad_all: 0
+                  min_value: 0
+                  max_value: 100
+                  adv_hittest: true
+                  on_release:
+                    - homeassistant.action:
+                        action: media_player.volume_set
+                        data:
+                          entity_id: media_player.ma_cuisine
+                          volume_level: !lambda return (x / 100);
+
+        - obj:
+            width: 295
+            height: 130
+            pad_all: 0
+            layout:
+              type: flex
+              flex_flow: ROW_WRAP
+            widgets:
+              - label:
+                  id: label_song
+                  width: 285
+                  long_mode: SCROLL
+                  align: top_left
+                  text: N/A
+                  text_font: open23
+                  text_color: 0x000000
+                  bg_color: 0xFFFFFF
+              - label:
+                  id: label_album
+                  width: 285
+                  long_mode: SCROLL
+                  align: top_left
+                  text: N/A
+                  text_font: open23
+                  text_color: 0x000000
+                  bg_color: 0xFFFFFF
+              - label:
+                  id: label_artist
+                  width: 285
+                  long_mode: SCROLL
+                  align: top_left
+                  text: N/A
+                  text_font: open23
+                  text_color: 0x000000
+                  bg_color: 0xFFFFFF
+
+        - button: !include
+            file: modules/buttons/media_shuffle.yaml
+            vars:
+              uid: button_3_1
+              height: 125
+              width: 160
+              icon: $shuffle_icon
+              entity_id: "media_player.ma_cuisine"

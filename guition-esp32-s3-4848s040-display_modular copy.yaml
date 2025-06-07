@@ -1,0 +1,409 @@
+esphome:
+  name: "guition-esp32-4848s040"
+  friendly_name: "Guition480"
+  comment: "Guition ESP32-4848S040 480px * 480px Smart Screen"
+
+packages:
+  # Generic configuration for ESP32 screens
+  wifi: !include modules/base/wifi.yaml
+  base: !include modules/base/base.yaml
+  colors: !include modules/base/color.yaml
+  fonts: !include modules/base/fonts.yaml
+  images: !include modules/base/images.yaml
+  time: !include modules/base/time_homeassistant.yaml
+  sensors: !include modules/sensors/sensors_base.yaml
+  substitutions: !include modules/base/substitutions.yaml
+
+  # Harware description file
+  hardware: !include modules/hardware/guition-esp32-s3-4848s040.yaml
+
+  # This section will Update button and relay state from Home Assistant
+  # Any button that has real time updates needs a section here
+
+  # Button 1-1 - Standard light button with state updates
+  button_1-1_state: !include
+    file: modules/sensors/switch_or_light_button_state.yaml
+    vars:
+      uid: button_1_1
+      entity_id: "light.salle_ordi"
+
+# -------------------------------------------------------------------------
+# LVGL pages and buttons
+# -------------------------------------------------------------------------
+lvgl:
+  style_definitions:
+    - id: no_checked_color
+      bg_color: 0xCC5E14
+      text_color: 0xB6B6B6
+    - id: header_footer
+      bg_color: 0x2F8CD8
+      bg_grad_color: 0x005782
+      bg_grad_dir: VER
+      bg_opa: COVER
+      border_opa: TRANSP
+      radius: 0
+      pad_all: 0
+      pad_row: 0
+      pad_column: 0
+      border_color: 0x0077b3
+      text_color: 0xFFFFFF
+      width: 100%
+      height: 35
+  theme: !include { file: modules/base/theme.yaml }
+  page_wrap: true
+
+# Boot screen
+  top_layer: !include
+    file: modules/screens/boot_screen.yaml
+    vars:
+      height: $screen_height
+      width: $screen_width
+
+# Main Page
+  pages:
+    - id: page_test
+      layout:
+        type: flex
+        flex_flow: COLUMN_WRAP
+      width: 100%
+      bg_color: white
+      bg_opa: cover
+      pad_all: 5
+      widgets:
+        # Button 1 - Standard (double hight) internal relay button with state updates
+        - button: !include
+            file: modules/buttons/light_button.yaml
+            vars:
+              uid: button_1_1
+              height: $button_height_single
+              text: Salle Ordi
+              icon: $lightbulb
+              entity_id: "light.salle_ordi"
+        # Button 2 - Standard script
+        - button: !include
+            file: modules/buttons/script_call.yaml
+            vars:
+              uid: button_1_2
+              height: $button_height_single
+              text: Timer 30 sec
+              icon: $sec30
+              entity_id: "script.30_secondes"
+        # Button 3 - Standard script
+        - button: !include
+            file: modules/buttons/script_call.yaml
+            vars: 
+              uid: button_1_3
+              height: $button_height_single
+              text: Timer 45 sec
+              icon: $sec45
+              entity_id: "script.45_secondes"
+        # Button 4 - Standard script
+        - button: !include
+            file: modules/buttons/script_call.yaml
+            vars:
+              uid: button_1_4
+              height: $button_height_single
+              text: Timer 60 sec
+              icon: $sec60
+              entity_id: "script.60_secondes"
+        # Button 5 - Go to next page
+        - button: !include
+            file: modules/buttons/page_button.yaml
+            vars:
+              uid: button_1_5
+              height: $button_height_single
+              text: Go to clock
+              icon: $arrowright
+              page: "page_timer_custom"
+        - button:
+            height: $button_height_single
+            width: $button_width
+            id: button_button_1_6
+            widgets:
+              - label:
+                  text_font: roboto14
+                  align: center
+                  id: label_button_1_6
+                  text: 0
+
+        - button:
+            height: $button_height_single
+            width: $button_width
+            id: button_button_1_7
+            widgets:
+              - label:
+                  text_font: roboto14
+                  align: center
+                  id: label_button_1_7
+                  text: 0
+        - button:
+            height: $button_height_single
+            width: $button_width
+            id: button_button_1_8
+            widgets:
+              - label:
+                  text_font: roboto14
+                  align: center
+                  id: label_button_1_8
+                  text: 0
+        - button:
+            height: $button_height_single
+            width: $button_width
+            id: button_button_1_9
+            widgets:
+              - label:
+                  text_font: roboto14
+                  align: center
+                  id: label_button_1_9
+                  text: 0
+        - button:
+            height: $button_height_single
+            width: $button_width
+            id: button_button_1_10
+            widgets:
+              - label:
+                  text_font: roboto14
+                  align: center
+                  id: label_button_1_10
+                  text: 0
+
+    - id: page_timer_custom
+      layout:
+        type: flex
+        flex_flow: ROW_WRAP
+      width: 100%
+      bg_color: white
+      bg_opa: cover
+      pad_all: 5
+      widgets:
+        # Button 3 - Standard (double hight) internal relay button with state updates
+        - button: !include
+            file: modules/buttons/script_call_label_only.yaml
+            vars:
+              uid: button_2_3
+              height: $button_height_single
+              width: $button_width_2column
+              text: "00:00:00"
+              entity_id: "script.timer_custom_cancel"
+              action: ${entity_id}
+        # Button 4 - Standard (double hight) internal relay button with state updates
+        - button: !include
+            file: modules/buttons/script_call_icon_only.yaml
+            vars:
+              uid: button_2_4
+              height: $button_height_single
+              width: $button_width_2column
+              icon: $playpause
+              entity_id: "script.timer_custom_start"
+        # Button 2 - Standard (double hight) internal relay button with state updates
+        - button: !include
+            file: modules/buttons/input_number_increment.yaml
+            vars:
+              uid: button_2_2
+              height: $button_height_single
+              width: $button_width_4column
+              icon: $number1
+              entity_id: "input_number.timer_minutes"
+        # Button 5 - Standard (double hight) internal relay button with state updates
+        - button: !include
+            file: modules/buttons/script_call_icon_only.yaml
+            vars:
+              uid: button_2_5
+              height: $button_height_single
+              width: $button_width_4column
+              icon: $number5
+              entity_id: "script.timer_5_minutes"
+        # Button 6 - Standard (double hight) internal relay button with state updates
+        - button: !include
+            file: modules/buttons/input_number_increment.yaml
+            vars:
+              uid: button_2_6
+              height: $button_height_single
+              width: $button_width_4column
+              icon: $number1
+              entity_id: "input_number.timer_seconds"
+        # Button 7 - Standard (double hight) internal relay button with state updates
+        - button: !include
+            file: modules/buttons/script_call_icon_only.yaml
+            vars:
+              uid: button_2_7
+              height: $button_height_single
+              width: $button_width_4column
+              icon: $number5
+              entity_id: "script.timer_5_secondes"
+        # Button 1 - Standard (double hight) internal relay button with state updates
+        - label: !include
+            file: modules/buttons/label.yaml
+            vars:
+              uid: label_2_1
+              height: $button_height_single
+              width: $button_width_2column
+              text: "0 minutes"
+        # Button 8 - Standard (double hight) internal relay button with state updates
+        - label: !include
+            file: modules/buttons/label.yaml
+            vars:
+              uid: label_2_8
+              height: $button_height_single
+              width: $button_width_2column
+              text: "0 secondes"
+        # Button 9 - Standard (double hight) internal relay button with state updates
+        - button: !include
+            file: modules/buttons/input_number_decrease.yaml
+            vars:
+              uid: button_2_9
+              height: $button_height_single
+              width: $button_width_4column
+              icon: $numberminus1
+              entity_id: "input_number.timer_minutes"
+        # Button 10 - Standard (double hight) internal relay button with state updates
+        - button: !include
+            file: modules/buttons/script_call_icon_only.yaml
+            vars:
+              uid: button_2_10
+              height: $button_height_single
+              width: $button_width_4column
+              icon: $number5
+              entity_id: "script.timer_5_minutes_decrease"
+        # Button 11 - Standard (double hight) internal relay button with state updates
+        - button: !include
+            file: modules/buttons/input_number_decrease.yaml
+            vars:
+              uid: button_2_11
+              height: $button_height_single
+              width: $button_width_4column
+              icon: $numberminus1
+              entity_id: "input_number.timer_seconds"
+        # Button 12 - Standard (double hight) internal relay button with state updates
+        - button: !include
+            file: modules/buttons/script_call_icon_only.yaml
+            vars:
+              uid: button_2_12
+              height: $button_height_single
+              width: $button_width_4column
+              icon: $number5
+              entity_id: "script.timer_5_secondes_decrease"
+
+    - id: page_media_player
+      layout:
+        type: flex
+        flex_flow: ROW_WRAP
+      width: 100%
+      bg_color: white
+      bg_opa: cover
+      pad_all: 5
+      widgets:
+        - obj:
+            width: 295
+            height: 295
+            on_short_click:
+              - homeassistant.action:
+                  action: media_player.media_play_pause
+                  data:
+                    entity_id: media_player.ma_cuisine
+            widgets:
+              - image:
+                  align: CENTER
+                  src: my_image
+                  id: ss_currently_playing
+        - obj:
+            width: 165
+            height: 295
+            layout:
+              type: flex
+              flex_flow: ROW_WRAP
+            widgets:
+              - button: !include
+                  file: modules/buttons/media_previous.yaml
+                  vars:
+                    uid: button_3_2
+                    height: 144
+                    width: 160
+                    icon: $previous_track
+                    entity_id: "media_player.ma_cuisine"              
+              - button: !include
+                  file: modules/buttons/media_next.yaml
+                  vars:
+                    uid: button_3_3
+                    height: 144
+                    width: 160
+                    icon: $next_track
+                    entity_id: "media_player.ma_cuisine"
+
+        - obj:
+            width: 295
+            height: 130
+            pad_all: 0
+            layout:
+              type: flex
+              flex_flow: ROW_WRAP
+            widgets:
+              - label:
+                  id: label_song
+                  width: 285
+                  long_mode: SCROLL
+                  align: top_left
+                  text: N/A
+                  text_font: open18
+                  text_color: 0x000000
+                  bg_color: 0xFFFFFF
+              - label:
+                  id: label_album
+                  width: 285
+                  long_mode: SCROLL
+                  align: top_left
+                  text: N/A
+                  text_font: open18
+                  text_color: 0x000000
+                  bg_color: 0xFFFFFF
+              - label:
+                  id: label_artist
+                  width: 285
+                  long_mode: SCROLL
+                  align: top_left
+                  text: N/A
+                  text_font: open18
+                  text_color: 0x000000
+                  bg_color: 0xFFFFFF
+              - obj:
+                  width: 285
+                  height: 40
+                  align: CENTER
+                  layout:
+                    type: flex
+                    flex_flow: COLUMN_WRAP
+                  widgets:
+                    - label:
+                        id: label_volume
+                        width: 30
+                        height: 30
+                        align: CENTER
+                        text: $volume
+                        text_font: light30
+                        text_color: 0x000000
+                    - slider:
+                        id: slider_media_player
+                        width: 245
+                        height: 30
+                        align: TOP_LEFT
+                        knob:
+                          pad_all: 0
+                        pad_all: 6
+                        min_value: 0
+                        max_value: 100
+                        adv_hittest: true
+                        on_release:
+                          - homeassistant.action:
+                              action: media_player.volume_set
+                              data:
+                                entity_id: media_player.ma_cuisine
+                                volume_level: !lambda return (x / 100);
+
+        - button: !include
+            file: modules/buttons/media_shuffle.yaml
+            vars:
+              uid: button_3_1
+              height: 125
+              width: 160
+              icon: $shuffle_icon
+              entity_id: "media_player.ma_cuisine"

@@ -1,17 +1,17 @@
 # Substitution variables used through the codebase
 substitutions:
   lightbulb:         "\U000F0335"
-  ceiling_light:     "\U000F0769"
-  lamp:              "\U000F06B5"
-  floor_lamp:        "\U000F08DD"
-  string_lights:     "\U000F12BA"
-  track_light:       "\U000F0914"
-  bulkhead_light:    "\U000F1A2F"
-  led_strip:         "\U000F07D6"
-  coach_lamp:        "\U000F1020"
-  ceiling_fan_light: "\U000F1798"
-  bed:               "\U000F02E3"
-  sunny:             "\U000F05A8"
+#  ceiling_light:     "\U000F0769"
+#  lamp:              "\U000F06B5"
+#  floor_lamp:        "\U000F08DD"
+#  string_lights:     "\U000F12BA"
+#  track_light:       "\U000F0914"
+#  bulkhead_light:    "\U000F1A2F"
+#  led_strip:         "\U000F07D6"
+#  coach_lamp:        "\U000F1020"
+#  ceiling_fan_light: "\U000F1798"
+#  bed:               "\U000F02E3"
+#  sunny:             "\U000F05A8"
   sec30:             "\U000F0D06"
   sec45:             "\U000F1B12"
   sec60:             "\U000F160B"
@@ -24,9 +24,15 @@ substitutions:
   home:              "\U000F02DC"
   previous:          "\U000F0731"
   next:              "\U000F0734"
+  shuffle_icon:      "\U000F049F"
+  noshuffle_icon:    "\U000F049E"
+  previous_track:    "\U000F04AE"
+  next_track:        "\U000F04AD"
+  volume:            "\U000F057E"
 
   red: "0xFF0000"
   icon_font: light40
+  icon_font_small: light24
   text_font: roboto24
   text_font_big: light75
   text_color: white
@@ -38,15 +44,15 @@ substitutions:
   label_on_color: "white"
   label_off_color: "gray"
   button_text_color: "white"
-  button_height_single: '102px'
-  button_height_double: '216px'
+  button_height_single: '99px'
+  button_height_double: '208px'
   button_width: '150px'
-  button_width_4column: '110px'
+  button_width_4column: '111px'
   button_width_2column: '230px'
   touchscreen_idle_timeout: "30s"
   touchscreen_daytime_brightness: "100%"
-  touchscreen_daytime_brightness_idle: "45%"
-  touchscreen_nighttime_brightness: "30%"
+  touchscreen_daytime_brightness_idle: "35%"
+  touchscreen_nighttime_brightness: "35%"
   # Boot screen configuration
   boot_screen_delay: 30s
 
@@ -57,6 +63,10 @@ substitutions:
   # Set Day mode at 5:30am
   screen_day_hour: '5'
   screen_day_minute: '30'
+
+  # Set Evening mode at 7:30pm
+  screen_evening_hour: '19'
+  screen_evening_minute: '30'
 
   # Screen Size
   screen_height: '480px'
