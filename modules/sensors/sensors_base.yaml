@@ -40,9 +40,9 @@ sensor:
     entity_id: media_player.ma_cuisine
     attribute: volume_level
     on_value:
-      - lvgl.slider.update:
-          id: slider_media_player
-          value: !lambda return (x * 100);
+      - lvgl.label.update:
+          id: label_media_player_volume
+          text: !lambda return std::to_string(int(x * 100)) + "%";
 
   - platform: homeassistant
     id: media_thumbnail_ready
@@ -338,6 +338,9 @@ text:
         - lvgl.label.update:
             id: label_button_2_3
             text: !lambda return id(timer_remain_text).state;
+        - lvgl.label.update:
+            id: label_button_4_1
+            text: !lambda return id(timer_remain_text).state;
 
   - platform: template
     id: song_text
@@ -405,3 +408,68 @@ online_image:
         - delay: 
             seconds: 10
         - component.update: my_image
+
+key_collector:
+  - id: countdown_reader
+    source_id: countdown_keypad
+    min_length: 1
+    max_length: 4
+    timeout: 5s
+    end_keys: "\uF00C"
+    end_key_required: true
+#    back_keys: "\uF55A"
+    allowed_keys: "0123456789"
+    on_progress:
+      - logger.log:
+          format: "input progress: '%s', started by '%c'"
+          args: [ 'x.c_str()', "(start == 0 ? '~' : start)" ]
+    on_result:
+      - logger.log:
+          format: "input result: '%s', started by '%c', ended by '%c'"
+          args: [ 'x.c_str()', "(start == 0 ? '~' : start)", "(end == 0 ? '~' : end)" ]
+#      - lvgl.textarea.update:
+#          id: text_area_1
+#          text: !lambda return x;
+      - lambda: |-
+          auto minutes = 0;
+          auto secondes = 0;
+          if (x.length() == 4) {
+            minutes = std::stoi(x.substr(0,2));
+            secondes = std::stoi(x.substr(2,2));
+            ESP_LOGD("key_collector debug", "Remaining: %.0i:%.0i", minutes,secondes);
+          } else if (x.length() == 3) {
+            minutes = std::stoi(x.substr(0,1));
+            secondes = std::stoi(x.substr(1,2));
+            ESP_LOGD("key_collector debug", "Remaining: %.0i:%.0i", minutes,secondes);
+          } else if (x.length() == 2) {
+            secondes = std::stoi(x.substr(0,2));
+            ESP_LOGD("key_collector debug", "Remaining: %.0i:%.0i", minutes,secondes);
+          } else if (x.length() == 1) {
+            secondes = std::stoi(x.substr(0,1));
+            ESP_LOGD("key_collector debug", "Remaining: %.0i:%.0i", minutes,secondes);
+          }
+          auto call = id(timer_minutes).make_call();
+          call.set_value(minutes);
+          call.perform();
+          auto call2 = id(timer_seconds).make_call();
+          call2.set_value(secondes);
+          call2.perform();
+      - homeassistant.action:
+          action: input_number.set_value
+          data:
+            entity_id: input_number.timer_minutes
+          data_template:
+            value: !lambda return id(timer_minutes).state;
+      - homeassistant.action:
+          action: input_number.set_value
+          data:
+            entity_id: input_number.timer_seconds
+          data_template:
+            value: !lambda return id(timer_seconds).state;
+      - homeassistant.action:
+          action: "script.timer_custom_start"
+
+    on_timeout:
+      - logger.log:
+          format: "input timeout: '%s', started by '%c'"
+          args: [ 'x.c_str()', "(start == 0 ? '~' : start)" ]

@@ -1,0 +1,28 @@
+---
+# Media Player Previous track button
+# vars:
+  # uid:
+  # height:
+  # width:
+  # icon:
+  # entity_id:
+height: ${height}
+id: button_${uid}
+width: ${width}
+widgets:
+  - label:
+      text_font: $icon_font
+      align: center
+      id: icon_${uid}
+      text: ${icon}
+  # - label:
+  #     align: bottom_left
+  #     id: label_${uid}
+  #     text: ${text}
+on_short_click:
+  then:
+    - homeassistant.action:
+        action: media_player.volume_set
+        data:
+          entity_id: ${entity_id}
+          volume_level: !lambda return id(media_player_volume).state + 0.02;

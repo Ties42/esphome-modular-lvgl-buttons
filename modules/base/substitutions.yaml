@@ -29,6 +29,8 @@ substitutions:
   previous_track:    "\U000F04AE"
   next_track:        "\U000F04AD"
   volume:            "\U000F057E"
+  volumeup:          "\U000F075D"
+  volumedown:        "\U000F075E"
 
   red: "0xFF0000"
   icon_font: light40

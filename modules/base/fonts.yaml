@@ -6155,6 +6155,8 @@ font:
       "\U000F06C1",  # arrowleft
       "\U000F15CB",  # number1
       "\U000F0B3E",  # number5
+      "\U000F075D",  # volumeup
+      "\U000F075E",  # volumedown
     ]
   
     # http://materialdesignicons.com/cdn/7.4.47/
@@ -6171,5 +6173,6 @@ font:
       "\U000F049E",  # noshuffle
       "\U000F04AE",  # previous
       "\U000F04AD",  # next
+      "\U000F057E",  # volume
     ]
 
