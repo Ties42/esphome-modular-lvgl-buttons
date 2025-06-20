@@ -73,13 +73,10 @@ number:
   - platform: homeassistant
     id: timer_minutes
     entity_id: input_number.timer_minutes
-    on_value: 
-        then:
-          - lvgl.label.update:
-              id: label_label_2_1
-              text:
-                format: "%.0f minutes"
-                args: ['id(timer_minutes).state']
+
+  - platform: homeassistant
+    id: timer_heures
+    entity_id: input_number.timer_heures
 
   - platform: template
     id: ha_now_timestamp2
@@ -102,13 +99,6 @@ number:
   - platform: homeassistant
     id: timer_seconds
     entity_id: input_number.timer_seconds
-    on_value: 
-        then:
-          - lvgl.label.update:
-              id: label_label_2_8
-              text:
-                format: "%.0f secondes"
-                args: ['id(timer_seconds).state']
 
 binary_sensor:
   - platform: status
@@ -140,9 +130,28 @@ text_sensor:
             condition:
               lambda: 'return id(timer_status).state == "idle";'
             then:
+              - lvgl.buttonmatrix.update:
+                  id: bm_timer
+                  state:
+                    disabled: false
+                  items:
+                    bg_color: 0x844269
+                    bg_grad_color: 0x63324F
+              - delay: 1s
               - lvgl.label.update:
-                  id: label_button_2_3
+                  id: label_button_4_1
                   text: "00:00:00"
+        - if:
+            condition:
+              lambda: 'return id(timer_status).state == "active";'
+            then:
+              - lvgl.buttonmatrix.update:
+                  id: bm_timer
+                  state:
+                    disabled: true
+                  items:
+                    bg_color: 0xB0ABAA
+                    bg_grad_color: 0xB0ABAA
         - lvgl.label.update:
             id: label_button_1_6
             text: !lambda return id(timer_status).state;
@@ -336,12 +345,8 @@ text:
     on_value: 
       then:
         - lvgl.label.update:
-            id: label_button_2_3
-            text: !lambda return id(timer_remain_text).state;
-        - lvgl.label.update:
             id: label_button_4_1
             text: !lambda return id(timer_remain_text).state;
-
   - platform: template
     id: song_text
     mode: text
@@ -411,18 +416,49 @@ online_image:
 
 key_collector:
   - id: countdown_reader
-    source_id: countdown_keypad
+    source_id: bm_timer
     min_length: 1
-    max_length: 4
-    timeout: 5s
-    end_keys: "\uF00C"
-    end_key_required: true
-#    back_keys: "\uF55A"
-    allowed_keys: "0123456789"
+    max_length: 6
+    timeout: 180s
+    end_keys: "\u009C"
+    end_key_required: True
+    clear_keys: "\u0008"
+#    allowed_keys: "0123456789"
     on_progress:
       - logger.log:
           format: "input progress: '%s', started by '%c'"
           args: [ 'x.c_str()', "(start == 0 ? '~' : start)" ]
+      - lambda: |-
+          std::string heures = "00";
+          std::string minutes = "00";
+          std::string secondes = "00";
+          if (x.length() == 6) {
+            heures = std::string(x.substr(0,2));
+            minutes = std::string(x.substr(2,2));
+            secondes = std::string(x.substr(4,2));
+          } else if (x.length() == 5) {
+            heures = std::string(x.substr(0,1));
+            minutes = std::string(x.substr(1,2));
+            secondes = std::string(x.substr(3,2));
+          } else if (x.length() == 4) {
+            minutes = std::string(x.substr(0,2));
+            secondes = std::string(x.substr(2,2));
+          } else if (x.length() == 3) {
+            minutes = std::string(x.substr(0,1));
+            secondes = std::string(x.substr(1,2));
+          } else if (x.length() == 2) {
+            secondes = std::string(x.substr(0,2));
+          } else if (x.length() == 1) {
+            secondes = std::string(x.substr(0,1));
+          }
+          size_t n_zero = 2;
+          auto rem_hour = std::string(2 - std::min(n_zero, heures.length()), '0') + heures;
+          auto rem_minute = std::string(2 - std::min(n_zero, minutes.length()), '0') + minutes;
+          auto rem_second = std::string(2 - std::min(n_zero, secondes.length()), '0') + secondes;
+          auto time_remain_text = rem_hour + ":" + rem_minute + ":" + rem_second;
+          auto call2 = id(timer_remain_text).make_call();
+          call2.set_value(time_remain_text);
+          call2.perform();
     on_result:
       - logger.log:
           format: "input result: '%s', started by '%c', ended by '%c'"
@@ -431,9 +467,20 @@ key_collector:
 #          id: text_area_1
 #          text: !lambda return x;
       - lambda: |-
+          auto heures = 0;
           auto minutes = 0;
           auto secondes = 0;
-          if (x.length() == 4) {
+          if (x.length() == 6) {
+            heures = std::stoi(x.substr(0,2));
+            minutes = std::stoi(x.substr(2,2));
+            secondes = std::stoi(x.substr(4,2));
+            ESP_LOGD("key_collector debug", "Remaining: %.0i:%.0i:%.0i", heures,minutes,secondes);
+          } else if (x.length() == 5) {
+            heures = std::stoi(x.substr(0,1));
+            minutes = std::stoi(x.substr(1,2));
+            secondes = std::stoi(x.substr(3,2));
+            ESP_LOGD("key_collector debug", "Remaining: %.0i:%.0i:%.0i", heures,minutes,secondes);
+          } else if (x.length() == 4) {
             minutes = std::stoi(x.substr(0,2));
             secondes = std::stoi(x.substr(2,2));
             ESP_LOGD("key_collector debug", "Remaining: %.0i:%.0i", minutes,secondes);
@@ -448,12 +495,21 @@ key_collector:
             secondes = std::stoi(x.substr(0,1));
             ESP_LOGD("key_collector debug", "Remaining: %.0i:%.0i", minutes,secondes);
           }
-          auto call = id(timer_minutes).make_call();
-          call.set_value(minutes);
+          auto call = id(timer_heures).make_call();
+          call.set_value(heures);
           call.perform();
+          auto call3 = id(timer_minutes).make_call();
+          call3.set_value(minutes);
+          call3.perform();
           auto call2 = id(timer_seconds).make_call();
           call2.set_value(secondes);
           call2.perform();
+      - homeassistant.action:
+          action: input_number.set_value
+          data:
+            entity_id: input_number.timer_heures
+          data_template:
+            value: !lambda return id(timer_heures).state;
       - homeassistant.action:
           action: input_number.set_value
           data:
@@ -468,7 +524,6 @@ key_collector:
             value: !lambda return id(timer_seconds).state;
       - homeassistant.action:
           action: "script.timer_custom_start"
-
     on_timeout:
       - logger.log:
           format: "input timeout: '%s', started by '%c'"

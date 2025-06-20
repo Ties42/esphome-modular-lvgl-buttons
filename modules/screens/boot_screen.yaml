@@ -75,6 +75,8 @@
           id: nav_buttons
           items:
             styles: header_footer
+            bg_color: 0xD1B8C7
+            bg_grad_color: 0xA3718F
           rows:
             - buttons:
               - id: page_prev
@@ -86,7 +88,7 @@
                 text: $home
                 on_press:
                   then:
-                    lvgl.page.show: page_test
+                    lvgl.page.show: page_media_player
               - id: page_next
                 text: $next
                 on_press:

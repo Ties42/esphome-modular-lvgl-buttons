@@ -145,7 +145,6 @@ lvgl:
                     width: 68
                     icon: $volumedown
                     entity_id: "media_player.ma_cuisine"
-
         - obj:
             width: 295
             height: 130
@@ -181,7 +180,6 @@ lvgl:
                   text_font: open23
                   text_color: 0x000000
                   bg_color: 0xFFFFFF
-
         - button: !include
             file: modules/buttons/media_shuffle.yaml
             vars:
@@ -189,123 +187,7 @@ lvgl:
               height: 125
               width: 160
               icon: $shuffle_icon
-              entity_id: "media_player.ma_cuisine"
-    - id: page_timer_custom
-      layout:
-        type: flex
-        flex_flow: ROW_WRAP
-      width: 100%
-      bg_color: white
-      bg_opa: cover
-      pad_all: 5
-      widgets:
-        # Button 3 - Standard (double hight) internal relay button with state updates
-        - button: !include
-            file: modules/buttons/script_call_label_only.yaml
-            vars:
-              uid: button_2_3
-              height: $button_height_single
-              width: $button_width_2column
-              text: "00:00:00"
-              entity_id: "script.timer_custom_cancel"
-              action: ${entity_id}
-        # Button 4 - Standard (double hight) internal relay button with state updates
-        - button: !include
-            file: modules/buttons/script_call_icon_only.yaml
-            vars:
-              uid: button_2_4
-              height: $button_height_single
-              width: $button_width_2column
-              icon: $playpause
-              entity_id: "script.timer_custom_start"
-        # Button 2 - Standard (double hight) internal relay button with state updates
-        - button: !include
-            file: modules/buttons/input_number_increment.yaml
-            vars:
-              uid: button_2_2
-              height: $button_height_single
-              width: $button_width_4column
-              icon: $number1
-              entity_id: "input_number.timer_minutes"
-        # Button 5 - Standard (double hight) internal relay button with state updates
-        - button: !include
-            file: modules/buttons/script_call_icon_only.yaml
-            vars:
-              uid: button_2_5
-              height: $button_height_single
-              width: $button_width_4column
-              icon: $number5
-              entity_id: "script.timer_5_minutes"
-        # Button 6 - Standard (double hight) internal relay button with state updates
-        - button: !include
-            file: modules/buttons/input_number_increment.yaml
-            vars:
-              uid: button_2_6
-              height: $button_height_single
-              width: $button_width_4column
-              icon: $number1
-              entity_id: "input_number.timer_seconds"
-        # Button 7 - Standard (double hight) internal relay button with state updates
-        - button: !include
-            file: modules/buttons/script_call_icon_only.yaml
-            vars:
-              uid: button_2_7
-              height: $button_height_single
-              width: $button_width_4column
-              icon: $number5
-              entity_id: "script.timer_5_secondes"
-        # Button 1 - Standard (double hight) internal relay button with state updates
-        - label: !include
-            file: modules/buttons/label.yaml
-            vars:
-              uid: label_2_1
-              height: $button_height_single
-              width: $button_width_2column
-              text: "0 minutes"
-        # Button 8 - Standard (double hight) internal relay button with state updates
-        - label: !include
-            file: modules/buttons/label.yaml
-            vars:
-              uid: label_2_8
-              height: $button_height_single
-              width: $button_width_2column
-              text: "0 secondes"
-        # Button 9 - Standard (double hight) internal relay button with state updates
-        - button: !include
-            file: modules/buttons/input_number_decrease.yaml
-            vars:
-              uid: button_2_9
-              height: $button_height_single
-              width: $button_width_4column
-              icon: $numberminus1
-              entity_id: "input_number.timer_minutes"
-        # Button 10 - Standard (double hight) internal relay button with state updates
-        - button: !include
-            file: modules/buttons/script_call_icon_only.yaml
-            vars:
-              uid: button_2_10
-              height: $button_height_single
-              width: $button_width_4column
-              icon: $number5
-              entity_id: "script.timer_5_minutes_decrease"
-        # Button 11 - Standard (double hight) internal relay button with state updates
-        - button: !include
-            file: modules/buttons/input_number_decrease.yaml
-            vars:
-              uid: button_2_11
-              height: $button_height_single
-              width: $button_width_4column
-              icon: $numberminus1
-              entity_id: "input_number.timer_seconds"
-        # Button 12 - Standard (double hight) internal relay button with state updates
-        - button: !include
-            file: modules/buttons/script_call_icon_only.yaml
-            vars:
-              uid: button_2_12
-              height: $button_height_single
-              width: $button_width_4column
-              icon: $number5
-              entity_id: "script.timer_5_secondes_decrease"    
+              entity_id: "media_player.ma_cuisine" 
     - id: page_timer_gisele
       layout:
         type: flex
@@ -332,9 +214,33 @@ lvgl:
               width: $button_width_2column
               icon: $playpause
               entity_id: "script.timer_custom_start"
-        - keyboard:
-            id: countdown_keypad
-            mode: NUMBER
+        - buttonmatrix:
+            id: bm_timer
+            width: 470
+            height: 330
+            items: # set all your buttonmatrix buttons to use your custom defined styles and font
+              text_font: roboto24
+              bg_color: 0x844269
+              bg_grad_color: 0x63324F
+            rows:
+              - buttons:
+                  - text: 1
+                  - text: 2
+                  - text: 3
+              - buttons:
+                  - text: 4
+                  - text: 5
+                  - text: 6
+              - buttons:
+                  - text: 7
+                  - text: 8
+                  - text: 9
+              - buttons:
+                  - text: "\U000F006E"
+                    key_code: "\u0008"
+                  - text: 0
+                  - text: "\U000F012C"
+                    key_code: "\u009C"
     - id: page_test
       layout:
         type: flex
@@ -388,7 +294,7 @@ lvgl:
               height: $button_height_single
               text: Go to clock
               icon: $arrowright
-              page: "page_timer_custom"
+              page: "page_timer_gisele"
         - button:
             height: $button_height_single
             width: $button_width
@@ -399,7 +305,6 @@ lvgl:
                   align: center
                   id: label_button_1_6
                   text: 0
-
         - button:
             height: $button_height_single
             width: $button_width
