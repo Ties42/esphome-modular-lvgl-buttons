@@ -78,13 +78,6 @@ number:
     id: timer_heures
     entity_id: input_number.timer_heures
 
-  - platform: template
-    id: ha_now_timestamp2
-    optimistic: true
-    min_value: -10000000000
-    max_value: 10000000000
-    step: 1
-
   - platform: homeassistant
     id: timer_finish_timestamp
     entity_id: input_number.timer_custom_finish_number
@@ -313,40 +306,20 @@ text_sensor:
                 format: "Connected SSID: %s"
                 args: [ 'id(connected_ssid).state.c_str()' ]
 
-  # - platform: template
-  #   id: timer_finish_in
-  #   update_interval: 1s
-  #   lambda: !lambda |-
-  #     if (id(timer_status).state == "active") {
-  #       double remain;
-  #       int remain_h, remain_m, remain_s, currenttime, finishtime;
-  #       currenttime = id(homeassistant_time).now().timestamp;
-  #       finishtime = id(timer_finish_timestamp).state;
-  #       remain= finishtime - currenttime;
-  #       remain_h = (int) remain/3600;
-  #       remain_m = (int) (remain - 3600*remain_h)/60;
-  #       remain_s = (int) remain - 3600*remain_h - 60*remain_m;
-  #       return remain;
-  #     }
-  #   on_value: 
-  #     then:
-  #       - lvgl.label.update:
-  #           id: label_button_1_7
-  #           text:
-  #             format: "%s"
-  #             args: ['id(timer_finish_in).state']
-text:
   - platform: template
     id: timer_remain_text
-    mode: text
-    optimistic: true
-    min_length: 0
-    max_length: 10
+    internal: True
+#    mode: text
+#    optimistic: true
+#    min_length: 0
+#    max_length: 8
     on_value: 
       then:
         - lvgl.label.update:
             id: label_button_4_1
             text: !lambda return id(timer_remain_text).state;
+
+text:
   - platform: template
     id: song_text
     mode: text
@@ -429,36 +402,32 @@ key_collector:
           format: "input progress: '%s', started by '%c'"
           args: [ 'x.c_str()', "(start == 0 ? '~' : start)" ]
       - lambda: |-
-          std::string heures = "00";
-          std::string minutes = "00";
-          std::string secondes = "00";
+          int heures, minutes, secondes;
+          heures = 0;
+          minutes = 0;
+          secondes = 0;
           if (x.length() == 6) {
-            heures = std::string(x.substr(0,2));
-            minutes = std::string(x.substr(2,2));
-            secondes = std::string(x.substr(4,2));
+            heures = std::stoi(x.substr(0,2));
+            minutes = std::stoi(x.substr(2,2));
+            secondes = std::stoi(x.substr(4,2));
           } else if (x.length() == 5) {
-            heures = std::string(x.substr(0,1));
-            minutes = std::string(x.substr(1,2));
-            secondes = std::string(x.substr(3,2));
+            heures = std::stoi(x.substr(0,1));
+            minutes = std::stoi(x.substr(1,2));
+            secondes = std::stoi(x.substr(3,2));
           } else if (x.length() == 4) {
-            minutes = std::string(x.substr(0,2));
-            secondes = std::string(x.substr(2,2));
+            minutes = std::stoi(x.substr(0,2));
+            secondes = std::stoi(x.substr(2,2));
           } else if (x.length() == 3) {
-            minutes = std::string(x.substr(0,1));
-            secondes = std::string(x.substr(1,2));
+            minutes = std::stoi(x.substr(0,1));
+            secondes = std::stoi(x.substr(1,2));
           } else if (x.length() == 2) {
-            secondes = std::string(x.substr(0,2));
+            secondes = std::stoi(x.substr(0,2));
           } else if (x.length() == 1) {
-            secondes = std::string(x.substr(0,1));
+            secondes = std::stoi(x.substr(0,1));
           }
-          size_t n_zero = 2;
-          auto rem_hour = std::string(2 - std::min(n_zero, heures.length()), '0') + heures;
-          auto rem_minute = std::string(2 - std::min(n_zero, minutes.length()), '0') + minutes;
-          auto rem_second = std::string(2 - std::min(n_zero, secondes.length()), '0') + secondes;
-          auto time_remain_text = rem_hour + ":" + rem_minute + ":" + rem_second;
-          auto call2 = id(timer_remain_text).make_call();
-          call2.set_value(time_remain_text);
-          call2.perform();
+          ESP_LOGD("key_collector debug", "Remaining: %02i:%02i:%02i", heures,minutes,secondes);
+          id(timer_remain_text).publish_state(str_sprintf("%02i:%02i:%02i", heures, minutes, secondes));
+          
     on_result:
       - logger.log:
           format: "input result: '%s', started by '%c', ended by '%c'"

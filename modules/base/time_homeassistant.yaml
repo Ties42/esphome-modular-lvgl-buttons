@@ -77,24 +77,13 @@ time:
                 time: !lambda return id(homeassistant_time).now();
           - lambda: |-
               if (id(timer_status).state == "active") {
-                int remain_h, remain_m, remain_s, currenttime, finishtime;
+                int remain_h, remain_m, remain_s;
                 time_t remain = id(timer_remaining_datetime).state_as_esptime().timestamp - id(homeassistant_time).now().timestamp;
                 ESP_LOGD("remain", "remain: %.0f", remain);
                 remain_h = (int) remain/3600;
                 remain_m = (int) (remain - 3600*remain_h)/60;
                 remain_s = (int) remain - 3600*remain_h - 60*remain_m;
-                ESP_LOGD("time debug", "Remaining: %.0i:%.0i:%.0i", remain_h,remain_m,remain_s);
-                size_t n_zero = 2;
-                auto rem_h_string = to_string(remain_h);
-                auto rem_m_string = to_string(remain_m);
-                auto rem_s_string = to_string(remain_s);
-                auto rem_hour = std::string(2 - std::min(n_zero, rem_h_string.length()), '0') + rem_h_string;
-                auto rem_minute = std::string(2 - std::min(n_zero, rem_m_string.length()), '0') + rem_m_string;
-                auto rem_second = std::string(2 - std::min(n_zero, rem_s_string.length()), '0') + rem_s_string;
-                auto time_remain_text = rem_hour + ":" + rem_minute + ":" + rem_second;
-                auto call2 = id(timer_remain_text).make_call();
-                call2.set_value(time_remain_text);
-                call2.perform();
+                id(timer_remain_text).publish_state(str_sprintf("%02i:%02i:%02i", remain_h,remain_m,remain_s));
               }
 
 switch:
