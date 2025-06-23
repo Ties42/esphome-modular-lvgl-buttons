@@ -3063,6 +3063,7 @@ font:
       "\u2605",
       "\u2606",
       "\u6FA4",
+      "\u3000",
       ]
 
   - file:
@@ -6078,6 +6079,7 @@ font:
       "\u2605",
       "\u2606",
       "\u6FA4",
+      "\u3000",
       ]
 #  - file:
 #      type: gfonts
@@ -6180,5 +6182,8 @@ font:
       "\U000F04AE",  # previous
       "\U000F04AD",  # next
       "\U000F057E",  # volume
+      "\U000F040A",  # play
+      "\U000F035D",  # down
+      "\U000F0360",  # up
     ]
 

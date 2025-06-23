@@ -497,3 +497,17 @@ key_collector:
       - logger.log:
           format: "input timeout: '%s', started by '%c'"
           args: [ 'x.c_str()', "(start == 0 ? '~' : start)" ]
+
+select:
+  - platform: lvgl
+    widget: media_player_playlist_list
+    id: media_player_playlist_select
+    internal: True
+    on_value:
+      then:
+        - logger.log:
+            format: "Chosen option: %s (index %d)"
+            args: ["x.c_str()", "i"]
+        - lvgl.roller.update:
+            id: media_player_playlist_list
+            selected_index: !lambda return i;

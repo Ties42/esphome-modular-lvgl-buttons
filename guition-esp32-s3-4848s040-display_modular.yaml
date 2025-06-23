@@ -188,6 +188,251 @@ lvgl:
               width: 160
               icon: $shuffle_icon
               entity_id: "media_player.ma_cuisine" 
+    - id: page_media_player_playlist
+      layout:
+        type: flex
+        flex_flow: ROW_WRAP
+      width: 100%
+      bg_color: white
+      bg_opa: cover
+      pad_all: 5
+      widgets:
+        - roller:
+            width: 400
+            height: 280
+            y: -100 
+            text_font: roboto24
+            visible_row_count: 7
+            align: CENTER
+            id: media_player_playlist_list
+            text_line_space: 10
+            anim_time: 500ms
+            mode: INFINITE
+            selected:
+              bg_color: 0x844269
+            options:
+              - Anime Youtube
+              - Anime Local
+              - NieR Youtube
+              - NieR Local
+              - Bandcamp
+              - Bandori
+              - Aqours
+              - Anime OP/ED Winter 2024
+              - Anime OP/ED Spring 2024
+              - Anime OP/ED Summer 2024
+              - Anime OP/ED Fall 2024
+              - Anime OP/ED Winter 2025
+              - Anime OP/ED Spring 2025
+            bg_color: 0xFFFFFF
+            text_color: 0x000000
+        - obj:
+            width: 60
+            height: 280
+            layout:
+              type: flex
+              flex_flow: ROW_WRAP
+            widgets:
+              - button:
+                  checkable: false
+                  press_lock: false
+                  scroll_on_focus: true
+                  radius: 25px
+                  width: 50px
+                  height: 130px
+                  shadow_width: 0 # This is required even though the default is supposed to be 0
+                  bg_color: 0x844269
+                  bg_grad_color: 0x63324F
+                  widgets:
+                    - label:
+                        text_font: $text_font_big
+                        align: center
+                        text: "\U000F0360"
+                  on_short_click:
+                    then:
+                      - select.previous:
+                          id: media_player_playlist_select
+                          cycle: True
+              - button:
+                  checkable: false
+                  press_lock: false
+                  scroll_on_focus: true
+                  radius: 25px
+                  width: 50px
+                  height: 130px
+                  shadow_width: 0 # This is required even though the default is supposed to be 0
+                  bg_color: 0x844269
+                  bg_grad_color: 0x63324F
+                  widgets:
+                    - label:
+                        text_font: $text_font_big
+                        align: center
+                        text: "\U000F035D"
+                  on_short_click:
+                    then:
+                      - select.next:
+                          id: media_player_playlist_select
+                          cycle: True
+        - button:
+            checkable: false
+            press_lock: false
+            scroll_on_focus: true
+            radius: 25px
+            width: 470px
+            height: 150px
+            shadow_width: 0 # This is required even though the default is supposed to be 0
+            bg_color: 0x844269
+            bg_grad_color: 0x63324F
+            widgets:
+              - label:
+                  text_font: $text_font_big
+                  align: center
+                  text: "\U000F040A"
+            on_short_click:
+              then:
+                - if:
+                    condition:
+                      lambda: 'return id(media_player_playlist_select).active_index() == 0;'
+                    then:
+                      - homeassistant.action:
+                          action: music_assistant.play_media
+                          data:
+                            entity_id: media_player.ma_cuisine
+                            media_type: playlist
+                            enqueue: replace
+                            media_id: library://playlist/88
+                - if:
+                    condition:
+                      lambda: 'return id(media_player_playlist_select).active_index() == 1;'
+                    then:
+                      - homeassistant.action:
+                          action: music_assistant.play_media
+                          data:
+                            entity_id: media_player.ma_cuisine
+                            media_type: playlist
+                            enqueue: replace
+                            media_id: library://playlist/45      
+                - if:
+                    condition:
+                      lambda: 'return id(media_player_playlist_select).active_index() == 2;'
+                    then:
+                      - homeassistant.action:
+                          action: music_assistant.play_media
+                          data:
+                            entity_id: media_player.ma_cuisine
+                            media_type: playlist
+                            enqueue: replace
+                            media_id: library://playlist/85
+                - if:
+                    condition:
+                      lambda: 'return id(media_player_playlist_select).active_index() == 3;'
+                    then:
+                      - homeassistant.action:
+                          action: music_assistant.play_media
+                          data:
+                            entity_id: media_player.ma_cuisine
+                            media_type: playlist
+                            enqueue: replace
+                            media_id: library://playlist/86
+                - if:
+                    condition:
+                      lambda: 'return id(media_player_playlist_select).active_index() == 4;'
+                    then:
+                      - homeassistant.action:
+                          action: music_assistant.play_media
+                          data:
+                            entity_id: media_player.ma_cuisine
+                            media_type: playlist
+                            enqueue: replace
+                            media_id: library://playlist/36
+                - if:
+                    condition:
+                      lambda: 'return id(media_player_playlist_select).active_index() == 5;'
+                    then:
+                      - homeassistant.action:
+                          action: music_assistant.play_media
+                          data:
+                            entity_id: media_player.ma_cuisine
+                            media_type: playlist
+                            enqueue: replace
+                            media_id: library://playlist/35
+                - if:
+                    condition:
+                      lambda: 'return id(media_player_playlist_select).active_index() == 6;'
+                    then:
+                      - homeassistant.action:
+                          action: music_assistant.play_media
+                          data:
+                            entity_id: media_player.ma_cuisine
+                            media_type: playlist
+                            enqueue: replace
+                            media_id: library://playlist/33
+                - if:
+                    condition:
+                      lambda: 'return id(media_player_playlist_select).active_index() == 7;'
+                    then:
+                      - homeassistant.action:
+                          action: music_assistant.play_media
+                          data:
+                            entity_id: media_player.ma_cuisine
+                            media_type: playlist
+                            enqueue: replace
+                            media_id: library://playlist/81
+                - if:
+                    condition:
+                      lambda: 'return id(media_player_playlist_select).active_index() == 8;'
+                    then:
+                      - homeassistant.action:
+                          action: music_assistant.play_media
+                          data:
+                            entity_id: media_player.ma_cuisine
+                            media_type: playlist
+                            enqueue: replace
+                            media_id: library://playlist/82
+                - if:
+                    condition:
+                      lambda: 'return id(media_player_playlist_select).active_index() == 9;'
+                    then:
+                      - homeassistant.action:
+                          action: music_assistant.play_media
+                          data:
+                            entity_id: media_player.ma_cuisine
+                            media_type: playlist
+                            enqueue: replace
+                            media_id: library://playlist/83
+                - if:
+                    condition:
+                      lambda: 'return id(media_player_playlist_select).active_index() == 10;'
+                    then:
+                      - homeassistant.action:
+                          action: music_assistant.play_media
+                          data:
+                            entity_id: media_player.ma_cuisine
+                            media_type: playlist
+                            enqueue: replace
+                            media_id: library://playlist/12
+                - if:
+                    condition:
+                      lambda: 'return id(media_player_playlist_select).active_index() == 11;'
+                    then:
+                      - homeassistant.action:
+                          action: music_assistant.play_media
+                          data:
+                            entity_id: media_player.ma_cuisine
+                            media_type: playlist
+                            enqueue: replace
+                            media_id: library://playlist/84
+                - if:
+                    condition:
+                      lambda: 'return id(media_player_playlist_select).active_index() == 12;'
+                    then:
+                      - homeassistant.action:
+                          action: music_assistant.play_media
+                          data:
+                            entity_id: media_player.ma_cuisine
+                            media_type: playlist
+                            enqueue: replace
+                            media_id: library://playlist/87
     - id: page_timer_gisele
       layout:
         type: flex
