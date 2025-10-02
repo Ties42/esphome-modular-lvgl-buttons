@@ -94,16 +94,16 @@ lvgl:
                   file: modules/buttons/media_previous.yaml
                   vars:
                     uid: button_3_2
-                    height: 144
-                    width: 72
+                    height: 48%
+                    width: 100%
                     icon: $previous_track
                     entity_id: "media_player.ma_cuisine"              
               - button: !include
                   file: modules/buttons/media_next.yaml
                   vars:
                     uid: button_3_3
-                    height: 144
-                    width: 72
+                    height: 48%
+                    width: 100%
                     icon: $next_track
                     entity_id: "media_player.ma_cuisine"
         - obj:
@@ -115,16 +115,16 @@ lvgl:
             widgets:
               - label:
                   id: label_volume
-                  width: 68
-                  height: 68
+                  width: 100%
+                  height: 23%
                   align: CENTER
                   text: $volume
                   text_font: $text_font_big
                   text_color: 0x000000
               - label:
                   id: label_media_player_volume
-                  width: 68
-                  height: 68
+                  width: 100%
+                  height: 23%
                   text_align: CENTER
                   text_font: roboto36
                   text_color: 0x000000
@@ -133,16 +133,16 @@ lvgl:
                   file: modules/buttons/media_volume_up.yaml
                   vars:
                     uid: button_3_4
-                    height: 68
-                    width: 68
+                    width: 100%
+                    height: 23%
                     icon: $volumeup
                     entity_id: "media_player.ma_cuisine"
               - button: !include
                   file: modules/buttons/media_volume_down.yaml
                   vars:
                     uid: button_3_5
-                    height: 68
-                    width: 68
+                    width: 100%                    
+                    height: 23%
                     icon: $volumedown
                     entity_id: "media_player.ma_cuisine"
         - obj:
@@ -300,7 +300,7 @@ lvgl:
                             entity_id: media_player.ma_cuisine
                             media_type: playlist
                             enqueue: replace
-                            media_id: library://playlist/88
+                            media_id: ytmusic://playlist/PLfQzKZkuxR83u4Yk61rzFNQ0yvsqgGwfN
                 - if:
                     condition:
                       lambda: 'return id(media_player_playlist_select).active_index() == 1;'
@@ -311,7 +311,7 @@ lvgl:
                             entity_id: media_player.ma_cuisine
                             media_type: playlist
                             enqueue: replace
-                            media_id: library://playlist/45      
+                            media_id: filesystem_local--9Rg3wGgr://playlist/playlists/Anisong.m3u
                 - if:
                     condition:
                       lambda: 'return id(media_player_playlist_select).active_index() == 2;'
@@ -322,7 +322,7 @@ lvgl:
                             entity_id: media_player.ma_cuisine
                             media_type: playlist
                             enqueue: replace
-                            media_id: library://playlist/85
+                            media_id: ytmusic://playlist/PLfQzKZkuxR80LhoOXyuwGYvHjIQ2Na8e0
                 - if:
                     condition:
                       lambda: 'return id(media_player_playlist_select).active_index() == 3;'
@@ -333,7 +333,7 @@ lvgl:
                             entity_id: media_player.ma_cuisine
                             media_type: playlist
                             enqueue: replace
-                            media_id: library://playlist/86
+                            media_id: filesystem_local--9Rg3wGgr://playlist/playlists/Nier - Local.m3u
                 - if:
                     condition:
                       lambda: 'return id(media_player_playlist_select).active_index() == 4;'
@@ -344,7 +344,7 @@ lvgl:
                             entity_id: media_player.ma_cuisine
                             media_type: playlist
                             enqueue: replace
-                            media_id: library://playlist/36
+                            media_id: filesystem_local--9Rg3wGgr://playlist/playlists/Bandcamp.m3u
                 - if:
                     condition:
                       lambda: 'return id(media_player_playlist_select).active_index() == 5;'
@@ -355,7 +355,7 @@ lvgl:
                             entity_id: media_player.ma_cuisine
                             media_type: playlist
                             enqueue: replace
-                            media_id: library://playlist/35
+                            media_id: filesystem_local--9Rg3wGgr://playlist/playlists/Bandori.m3u
                 - if:
                     condition:
                       lambda: 'return id(media_player_playlist_select).active_index() == 6;'
@@ -366,7 +366,7 @@ lvgl:
                             entity_id: media_player.ma_cuisine
                             media_type: playlist
                             enqueue: replace
-                            media_id: library://playlist/33
+                            media_id: filesystem_local--9Rg3wGgr://playlist/playlists/Aqours.m3u
                 - if:
                     condition:
                       lambda: 'return id(media_player_playlist_select).active_index() == 7;'
@@ -377,7 +377,7 @@ lvgl:
                             entity_id: media_player.ma_cuisine
                             media_type: playlist
                             enqueue: replace
-                            media_id: library://playlist/81
+                            media_id: ytmusic://playlist/PLjDu4uhdZ8rtvDg0T3KGXERBy0UgF0iho
                 - if:
                     condition:
                       lambda: 'return id(media_player_playlist_select).active_index() == 8;'
@@ -388,7 +388,7 @@ lvgl:
                             entity_id: media_player.ma_cuisine
                             media_type: playlist
                             enqueue: replace
-                            media_id: library://playlist/82
+                            media_id: ytmusic://playlist/PLjDu4uhdZ8ruztMYj8iA2I1lSkt4sG7_A
                 - if:
                     condition:
                       lambda: 'return id(media_player_playlist_select).active_index() == 9;'
@@ -399,7 +399,7 @@ lvgl:
                             entity_id: media_player.ma_cuisine
                             media_type: playlist
                             enqueue: replace
-                            media_id: library://playlist/83
+                            media_id: ytmusic://playlist/PLjDu4uhdZ8ruJcDvnuC5KGTkFcJzfBcU2
                 - if:
                     condition:
                       lambda: 'return id(media_player_playlist_select).active_index() == 10;'
@@ -410,7 +410,7 @@ lvgl:
                             entity_id: media_player.ma_cuisine
                             media_type: playlist
                             enqueue: replace
-                            media_id: library://playlist/12
+                            media_id: ytmusic://playlist/PLjDu4uhdZ8rssVt6qel_efR-MME7RIRDn
                 - if:
                     condition:
                       lambda: 'return id(media_player_playlist_select).active_index() == 11;'
@@ -421,7 +421,7 @@ lvgl:
                             entity_id: media_player.ma_cuisine
                             media_type: playlist
                             enqueue: replace
-                            media_id: library://playlist/84
+                            media_id: ytmusic://playlist/PLjDu4uhdZ8ruU7tFRSlOkGqHF6LvpUfPw
                 - if:
                     condition:
                       lambda: 'return id(media_player_playlist_select).active_index() == 12;'
@@ -432,7 +432,7 @@ lvgl:
                             entity_id: media_player.ma_cuisine
                             media_type: playlist
                             enqueue: replace
-                            media_id: library://playlist/87
+                            media_id: ytmusic://playlist/PLjDu4uhdZ8rsILSO9gTRgsarhrFUoS4Im
     - id: page_timer_gisele
       layout:
         type: flex

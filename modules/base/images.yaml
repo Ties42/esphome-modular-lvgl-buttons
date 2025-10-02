@@ -1,7 +1,7 @@
 ---
 # Graphic assets
 image:
-  - file: https://esphome.io/_static/logo-text-on-light.svg
+  - file: modules/assets/logo-text.png
     id: boot_logo_90px
     resize: 450x90 # aspect ratio 5
     type: RGB565
