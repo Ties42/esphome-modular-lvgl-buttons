@@ -379,14 +379,19 @@ lvgl:
               text: "00:00:00"
               entity_id: "script.timer_custom_cancel"
               action: ${entity_id}
-        - button: !include
-            file: modules/buttons/script_call_icon_only.yaml
-            vars:
-              uid: button_4_2
-              height: $button_height_single
-              width: $button_width_2column
-              icon: $playpause
-              entity_id: "script.timer_custom_start"
+        - container:
+            id: cont_button_4_2
+            width: $button_width_2column
+            height: $button_height_single
+            widgets:
+              - button: !include
+                  file: modules/buttons/script_call_icon_only.yaml
+                  vars:
+                    uid: button_4_2
+                    height: $button_height_single
+                    width: $button_width_2column
+                    icon: $playpause
+                    entity_id: "script.timer_custom_start"
         - buttonmatrix:
             id: bm_timer
             width: 470

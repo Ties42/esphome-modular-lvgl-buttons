@@ -130,6 +130,9 @@ text_sensor:
                   items:
                     bg_color: 0x844269
                     bg_grad_color: 0x63324F
+              - lvgl.container.update:
+                  id: cont_button_4_2
+                  opa: TRANSP
               - delay: 1s
               - lvgl.label.update:
                   id: label_button_4_1
@@ -145,6 +148,9 @@ text_sensor:
                   items:
                     bg_color: 0xB0ABAA
                     bg_grad_color: 0xB0ABAA
+              - lvgl.container.update:
+                  id: cont_button_4_2
+                  opa: COVER              
         - lvgl.label.update:
             id: label_button_1_6
             text: !lambda return id(timer_status).state;
