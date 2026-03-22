@@ -47,8 +47,10 @@ sensor:
   - platform: homeassistant
     id: media_thumbnail_ready
     entity_id: input_datetime.media_thumbnail_write_done
+    attribute: timestamp
     on_value:
       - component.update: my_image
+
 
 #  - platform: homeassistant
 #    id: volume_cuisine
