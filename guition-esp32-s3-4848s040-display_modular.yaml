@@ -523,3 +523,16 @@ lvgl:
                   align: center
                   id: label_button_1_10
                   text: 0
+    - id: idle_screen
+#      layout:
+#        type: flex
+#        flex_flow: ROW_WRAP
+      width: 100%
+      text_font: $text_font
+      bg_color: white
+      bg_opa: COVER
+      pad_all: 0
+      widgets:
+        - image:
+            src: idle_album_image
+            id: idle_screen_image

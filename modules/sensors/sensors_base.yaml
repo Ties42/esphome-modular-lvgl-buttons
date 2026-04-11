@@ -51,6 +51,13 @@ sensor:
     on_value:
       - component.update: my_image
 
+  - platform: homeassistant
+    id: album_thumbnail_ready
+    entity_id: input_datetime.album_datetime_write_done
+    attribute: timestamp
+    on_value:
+      - component.update: idle_album_image
+
 
 #  - platform: homeassistant
 #    id: volume_cuisine
@@ -394,6 +401,21 @@ online_image:
         - delay: 
             seconds: 10
         - component.update: my_image
+
+  - id: idle_album_image
+    url: http://192.168.1.13:8123/local/album_thumbnail.png
+    format: png
+    type: RGB565
+    resize: 480x480
+    on_download_finished:
+      - lvgl.image.update:
+          id: idle_screen_image
+          src: idle_album_image
+    on_error: 
+      then:
+        - delay: 
+            seconds: 10
+        - component.update: idle_album_image
 
 key_collector:
   - id: countdown_reader
