@@ -3,6 +3,25 @@ esphome:
   friendly_name: "Guition480"
   comment: "Guition ESP32-4848S040 480px * 480px Smart Screen"
 
+mqtt:
+  broker: 192.168.1.13
+  username: !secret mqttguitonuser
+  password: !secret mqttguitonpwd
+  client_id: MQTT_GUITON_CUISINE
+  discover_ip: False
+  discovery: False
+  reboot_timeout: 0s
+  on_message:
+    - topic: albumwritedone
+      qos: 0
+      then:
+        - component.update: idle_album_image
+    - topic: imagewritedone
+      qos: 0
+      then:
+        - component.update: my_image
+
+
 packages:
   # Generic configuration for ESP32 screens
   wifi: !include modules/base/wifi.yaml

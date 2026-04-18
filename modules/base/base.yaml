@@ -50,8 +50,14 @@ lvgl:
   on_idle:
     timeout: $touchscreen_idle_timeout
     then:
-      - lvgl.page.show: idle_screen
       - logger.log: "LVGL is idle"
+      - if:
+          condition:
+            and:
+              - lambda: 'return id(timer_status).state == "idle";'
+              - lambda: 'return id(speaker_status).state == "idle";'
+          then:
+            - lvgl.page.show: idle_screen
 #      - if:
 #          condition:
 #            select.is:

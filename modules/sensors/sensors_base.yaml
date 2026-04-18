@@ -51,12 +51,12 @@ sensor:
     on_value:
       - component.update: my_image
 
-  - platform: homeassistant
-    id: album_thumbnail_ready
-    entity_id: input_datetime.album_datetime_write_done
-    attribute: timestamp
-    on_value:
-      - component.update: idle_album_image
+#  - platform: homeassistant
+#    id: album_thumbnail_ready
+#    entity_id: input_datetime.album_datetime_write_done
+#    attribute: timestamp
+#    on_value:
+#      - component.update: idle_album_image
 
 
 #  - platform: homeassistant
@@ -128,6 +128,9 @@ text_sensor:
     entity_id: timer.timer_custom
     on_value: 
       then:
+        - logger.log:
+            format: "Timer status: %s "
+            args: ["x.c_str()"]
         - if:
             condition:
               lambda: 'return id(timer_status).state == "idle";'
@@ -163,6 +166,10 @@ text_sensor:
         - lvgl.label.update:
             id: label_button_1_6
             text: !lambda return id(timer_status).state;
+
+  - platform: homeassistant
+    id: speaker_status
+    entity_id: media_player.ma_cuisine
 
   - platform: homeassistant
     id: media_source
@@ -406,7 +413,7 @@ online_image:
     url: http://192.168.1.13:8123/local/album_thumbnail.png
     format: png
     type: RGB565
-    resize: 480x480
+    resize: 480x445
     on_download_finished:
       - lvgl.image.update:
           id: idle_screen_image
