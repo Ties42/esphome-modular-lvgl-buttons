@@ -341,6 +341,16 @@ text_sensor:
             id: label_button_4_1
             text: !lambda return id(timer_remain_text).state;
 
+  - platform: mqtt_subscribe
+    name: "Vidange"
+    id: vidange
+    topic: nextvidange
+    on_value: 
+      then:
+        - lvgl.label.update:
+            id: label_vidange
+            text: !lambda return id(vidange).state;
+
 text:
   - platform: template
     id: song_text

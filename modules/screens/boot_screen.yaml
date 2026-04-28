@@ -67,8 +67,20 @@
                          text: "OK"
                     on_press:
                      - lvgl.widget.hide: boot_screen
+      - label:
+          id: label_vidange
+          styles: header_footer_left
+          align: bottom_left
+          text: "N/D"
+          text_font: roboto24
+          text_color: 0xFFFFFF
+          pad_all: 0
+          text_align: CENTER
+          outline_width: 0
+          bg_color: 0xD1B8C7
+          bg_grad_color: 0xA3718F
       - buttonmatrix:
-          align: bottom_mid
+          align: bottom_right
           styles: header_footer
           pad_all: 0
           outline_width: 0
@@ -94,3 +106,4 @@
                 on_press:
                   then:
                     lvgl.page.next:
+
