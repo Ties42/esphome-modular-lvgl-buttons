@@ -66,7 +66,7 @@ lvgl:
       pad_column: 0
       border_color: 0x0077b3
       text_color: 0xFFFFFF
-      width: 75%
+      width: 65%
       height: 35
     - id: header_footer_left
       bg_color: 0x2F8CD8
@@ -80,7 +80,7 @@ lvgl:
       pad_column: 0
       border_color: 0x0077b3
       text_color: 0xFFFFFF
-      width: 25%
+      width: 35%
       height: 35
   theme: !include { file: modules/base/theme.yaml }
   page_wrap: true
