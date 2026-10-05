@@ -239,7 +239,7 @@ lvgl:
             align: CENTER
             id: media_player_playlist_list
             text_line_space: 10
-            anim_time: 500ms
+            anim_duration: 500ms
             mode: INFINITE
             selected:
               bg_color: 0x844269

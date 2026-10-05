@@ -403,8 +403,9 @@ text:
 #            url: !lambda return id(album_cover_http).state;
 #        - component.update: my_image
 
-online_image:
-  - id: my_image
+image:
+  - platform: online_image
+    id: my_image
     url: http://192.168.1.13:8123/local/media_thumbnail.png
     format: png
     type: RGB565
@@ -419,7 +420,8 @@ online_image:
             seconds: 10
         - component.update: my_image
 
-  - id: idle_album_image
+  - platform: online_image
+    id: idle_album_image
     url: http://192.168.1.13:8123/local/album_thumbnail.png
     format: png
     type: RGB565
